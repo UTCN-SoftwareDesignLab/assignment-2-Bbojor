@@ -3,7 +3,11 @@ package com.example.assignment2;
 import com.example.assignment2.book.model.Book;
 import com.example.assignment2.book.dto.BookDTO;
 import com.example.assignment2.user.dto.UserDTO;
+import com.example.assignment2.user.model.ERole;
+import com.example.assignment2.user.model.Role;
+import com.example.assignment2.user.model.User;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.function.Supplier;
@@ -30,6 +34,8 @@ public class TestCreationFactory {
             supplier = TestCreationFactory::newBookDTO;
         } else if (cls.equals(UserDTO.class)) {
             supplier = TestCreationFactory::newUserDTO;
+        } else if (cls.equals(User.class)) {
+            supplier = TestCreationFactory::newUser;
         } else {
             supplier = () -> new String("You failed.");
         }
@@ -39,6 +45,15 @@ public class TestCreationFactory {
                 (T) finalSupplier.get()
         ).collect(Collectors.toSet()) // remove duplicates in case of Long for example
                 .stream().collect(toList());
+    }
+
+    public static User newUser() {
+        return User.builder()
+                .id(randomLong())
+                .username(randomString())
+                .email(randomEmail())
+                .password(randomString())
+                .build();
     }
 
     public static UserDTO newUserDTO() {

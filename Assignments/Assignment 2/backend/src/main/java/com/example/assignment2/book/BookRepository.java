@@ -15,5 +15,5 @@ public interface BookRepository extends JpaRepository<Book, Long>, QuerydslPredi
     default void customize(QuerydslBindings bindings, QBook root){
         bindings.bind(String.class)
                 .first((SingleValueBinding< StringPath, String>) StringExpression::containsIgnoreCase);
-    };
+    }
 }

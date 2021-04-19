@@ -17,7 +17,7 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping
-    public List<UserDTO> findALl() {
+    public List<UserDTO> findAll() {
         return userService.findAll();
     }
 
@@ -31,6 +31,6 @@ public class UserController {
     public UserDTO changePassword(@PathVariable Long id, @RequestBody String newPassword) { return userService.changePassword(id, newPassword);}
 
     @DeleteMapping(ENTITY)
-    public void deleteUser(@PathVariable Long id) { userService.deleteUser(id);}
+    public void deleteUser(@PathVariable Long id) { userService.delete(id);}
 
 }

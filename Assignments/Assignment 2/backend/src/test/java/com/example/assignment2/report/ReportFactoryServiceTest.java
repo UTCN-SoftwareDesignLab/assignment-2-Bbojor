@@ -22,6 +22,5 @@ class ReportFactoryServiceTest {
         BookReportService pdfService =  reportFactoryService.getReportService(BookReportType.PDF);
         String actualPdfResult = pdfService.export();
         Assertions.assertEquals("PDF", actualPdfResult);
-
     }
 }

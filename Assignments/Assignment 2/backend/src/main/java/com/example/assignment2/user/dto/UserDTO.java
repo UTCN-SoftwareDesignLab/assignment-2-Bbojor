@@ -1,5 +1,6 @@
 package com.example.assignment2.user.dto;
 
+import com.example.assignment2.user.model.ERole;
 import com.example.assignment2.user.model.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,5 +19,7 @@ public class UserDTO {
     private Long id;
     private String username;
     private String email;
-    private Set<Role> roles;
+
+    @Builder.Default
+    private Set<String> roles = new HashSet<>();
 }

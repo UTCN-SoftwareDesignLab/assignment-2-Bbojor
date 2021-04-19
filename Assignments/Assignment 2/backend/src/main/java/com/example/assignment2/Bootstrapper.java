@@ -24,13 +24,15 @@ public class Bootstrapper implements ApplicationListener<ApplicationReadyEvent> 
     private final AuthService authService;
     private final BookRepository bookRepository;
 
-    @Value("${app.bootstrap}")
-    private Boolean bootstrap;
+    @Value("${app.bootstrapRoles}")
+    private Boolean bootstrapRoles;
+    @Value("${app.bootstrapUsers}")
+    private Boolean bootstrapUsers;
 
 
     @Override
     public void onApplicationEvent(ApplicationReadyEvent event) {
-        if(bootstrap) {
+        if(bootstrapRoles) {
             bookRepository.deleteAll();
             userRepository.deleteAll();
             roleRepository.deleteAll();
@@ -42,18 +44,21 @@ public class Bootstrapper implements ApplicationListener<ApplicationReadyEvent> 
                 );
             }
         }
-        authService.register(SignupRequest.builder()
-                .email("barbu@email.com")
-                .username("bb")
-                .password("Pass123")
-                .roles(Set.of("ADMIN"))
-                .build());
 
-        authService.register(SignupRequest.builder()
-                .email("employee@email.com")
-                .username("employee")
-                .password("Pass123")
-                .roles(Set.of("EMPLOYEE"))
-                .build());
+        if(bootstrapUsers) {
+            authService.register(SignupRequest.builder()
+                    .email("barbu@email.com")
+                    .username("bb")
+                    .password("Pass123")
+                    .roles(Set.of("ADMIN"))
+                    .build());
+
+            authService.register(SignupRequest.builder()
+                    .email("employee@email.com")
+                    .username("employee")
+                    .password("Pass123")
+                    .roles(Set.of("EMPLOYEE"))
+                    .build());
+        }
     }
 }
