@@ -3,6 +3,7 @@ package com.example.assignment2.book;
 import com.example.assignment2.BaseControllerTest;
 import com.example.assignment2.TestCreationFactory;
 import com.example.assignment2.book.dto.BookDTO;
+import com.example.assignment2.book.dto.BookDTO;
 import com.example.assignment2.report.CsvBookReportService;
 import com.example.assignment2.report.PdfBookReportService;
 import com.example.assignment2.report.ReportFactoryService;
@@ -62,7 +63,7 @@ class BookControllerTest extends BaseControllerTest {
                 .author("Isaac Asimov")
                 .title("The Foundation")
                 .genre("Sci-Fi")
-                .id(3000L)
+                .id(1L)
                 .price(20.0)
                 .quantity(15)
                 .build();
@@ -71,7 +72,7 @@ class BookControllerTest extends BaseControllerTest {
                 .author("Stephen King")
                 .title("The Shining")
                 .genre("Horror")
-                .id(2000L)
+                .id(2L)
                 .price(20.0)
                 .quantity(15)
                 .build();
@@ -80,7 +81,7 @@ class BookControllerTest extends BaseControllerTest {
                 .author("H.P. Lovecraft")
                 .title("1000 pages of just the n-word")
                 .genre("Horror")
-                .id(3002L)
+                .id(3L)
                 .price(20.0)
                 .quantity(15)
                 .build();
@@ -89,18 +90,18 @@ class BookControllerTest extends BaseControllerTest {
                 .author("Stephen King")
                 .title("It")
                 .genre("Horror")
-                .id(4001L)
+                .id(4L)
                 .price(20.0)
-                .quantity(15)
+                .quantity(0)
                 .build();
 
         BookDTO book5 = BookDTO.builder()
                 .author("Some Dude")
                 .title("Title with foundation in it")
                 .genre("Self help")
-                .id(5000L)
+                .id(5L)
                 .price(20.0)
-                .quantity(15)
+                .quantity(0)
                 .build();
 
         books.add(book1);
@@ -121,11 +122,15 @@ class BookControllerTest extends BaseControllerTest {
         r3.add(book2);
         r3.add(book3);
 
+        List<BookDTO> r4 = new ArrayList<>();
+        r4.add(book4);
+        r4.add(book5);
+
         when(bookService.findAll(null)).thenReturn(books);
         when(bookService.findAll("title:Shining")).thenReturn(r1);
         when(bookService.findAll("genre:horror")).thenReturn(r2);
         when(bookService.findAll("genre:horror,title:the")).thenReturn(r3);
-
+        when(bookService.findAll("quantity:0")).thenReturn(r4);
 
         ResultActions response = mockMvc.perform(get(BOOKS));
 
@@ -146,6 +151,11 @@ class BookControllerTest extends BaseControllerTest {
 
         response.andExpect(status().isOk())
                 .andExpect(jsonContentToBe(r3));
+
+        response = mockMvc.perform(get(BOOKS + SEARCH + "quantity:0"));
+
+        response.andExpect(status().isOk())
+                .andExpect(jsonContentToBe(r4));
     }
 
     @Test

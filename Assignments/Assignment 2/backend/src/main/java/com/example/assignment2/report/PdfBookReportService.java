@@ -2,8 +2,8 @@ package com.example.assignment2.report;
 
 import com.example.assignment2.book.BookRepository;
 import com.example.assignment2.book.model.Book;
-import com.example.assignment2.search.PredicateBuilder;
-import lombok.RequiredArgsConstructor;
+import lombok.Builder;
+import lombok.experimental.SuperBuilder;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
@@ -14,10 +14,12 @@ import java.io.IOException;
 import java.util.Date;
 
 @Service
-@RequiredArgsConstructor
-public class PdfBookReportService implements BookReportService {
+public class PdfBookReportService extends BookReportService {
 
-    private final BookRepository bookRepository;
+
+    public PdfBookReportService(BookRepository bookRepository) {
+        super(bookRepository);
+    }
 
     @Override
     public String export()  {
@@ -30,12 +32,12 @@ public class PdfBookReportService implements BookReportService {
 
             contentStream.beginText();
 
-            contentStream.setFont(PDType1Font.COURIER, 12);
+            contentStream.setFont(PDType1Font.TIMES_ROMAN, 12);
 
-            contentStream.newLineAtOffset(25, 500);
+            contentStream.newLineAtOffset(25, 700);
 
-            PredicateBuilder<Book> predicateBuilder = new PredicateBuilder<>(Book.class).with("quantity", "<", "0");
-            Iterable<Book> outOfStockBooks = bookRepository.findAll(predicateBuilder.build());
+
+            Iterable<Book> outOfStockBooks = getOutOfStockBooks();
 
             for (Book b: outOfStockBooks) {
                 contentStream.showText(b.getTitle() + " - " + b.getAuthor());

@@ -36,7 +36,7 @@ class BookServiceIntegrationTest {
                 .author("Isaac Asimov")
                 .title("The Foundation")
                 .genre("Sci-Fi")
-                .id(3000L)
+                .id(1L)
                 .price(20.0)
                 .quantity(15)
                 .build();
@@ -45,7 +45,7 @@ class BookServiceIntegrationTest {
                 .author("Stephen King")
                 .title("The Shining")
                 .genre("Horror")
-                .id(2000L)
+                .id(2L)
                 .price(20.0)
                 .quantity(15)
                 .build();
@@ -54,7 +54,7 @@ class BookServiceIntegrationTest {
                 .author("H.P. Lovecraft")
                 .title("1000 pages of just the n-word")
                 .genre("Horror")
-                .id(3002L)
+                .id(3L)
                 .price(20.0)
                 .quantity(15)
                 .build();
@@ -63,18 +63,18 @@ class BookServiceIntegrationTest {
                 .author("Stephen King")
                 .title("It")
                 .genre("Horror")
-                .id(4001L)
+                .id(4L)
                 .price(20.0)
-                .quantity(15)
+                .quantity(0)
                 .build();
 
         Book book5 = Book.builder()
                 .author("Some Dude")
                 .title("Title with foundation in it")
                 .genre("Self help")
-                .id(5000L)
+                .id(5L)
                 .price(20.0)
-                .quantity(15)
+                .quantity(0)
                 .build();
 
         books.add(book1);
@@ -103,6 +103,9 @@ class BookServiceIntegrationTest {
 
         foundBooks = bookService.findAll("title:it,author:steph");
         assertEquals(1 ,foundBooks.size());
+
+        foundBooks = bookService.findAll("quantity:0");
+        assertEquals(2 ,foundBooks.size());
     }
 
     @Test

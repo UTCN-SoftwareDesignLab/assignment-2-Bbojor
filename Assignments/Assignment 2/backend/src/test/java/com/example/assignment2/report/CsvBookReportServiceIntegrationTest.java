@@ -12,10 +12,10 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-class PdfBookReportServiceIntegrationTest {
+class CsvBookReportServiceIntegrationTest {
 
     @Autowired
-    private  PdfBookReportService reportService;
+    private  CsvBookReportService reportService;
 
     @Autowired
     private BookRepository bookRepository;
@@ -77,7 +77,6 @@ class PdfBookReportServiceIntegrationTest {
         bookRepository.saveAll(books);
 
         String result = reportService.export();
-        assertEquals(result, "PDF");
+        assertEquals(result, "CSV");
     }
-
 }
