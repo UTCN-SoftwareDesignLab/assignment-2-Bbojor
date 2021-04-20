@@ -5,14 +5,19 @@ import com.example.assignment2.security.dto.LoginRequest;
 import com.example.assignment2.security.dto.SignupRequest;
 import com.example.assignment2.user.dto.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.ConstraintViolationException;
+import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -52,7 +57,7 @@ public class AuthController {
     }
 
     @PostMapping(SIGN_UP)
-    public ResponseEntity<?> registerUser(@RequestBody SignupRequest signupRequest) {
+    public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signupRequest) {
         if(authService.existsByUsername(signupRequest.getUsername())) {
             return ResponseEntity.badRequest()
                     .body("Error: Username already taken!");
@@ -66,6 +71,18 @@ public class AuthController {
         authService.register(signupRequest);
 
         return ResponseEntity.ok("User registered successfully!");
+    }
+
+    //Catch exceptions thrown by validators in controller methods and put the errors in a list
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public List<String> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        List<String> errors = new ArrayList<>();
+        ex.getBindingResult().getAllErrors().forEach((error) -> {
+            String errorMessage = error.getDefaultMessage();
+            errors.add(errorMessage);
+        });
+        return errors;
     }
 
 }

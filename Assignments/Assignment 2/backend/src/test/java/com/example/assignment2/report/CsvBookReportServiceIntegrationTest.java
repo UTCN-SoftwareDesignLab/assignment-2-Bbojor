@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +22,7 @@ class CsvBookReportServiceIntegrationTest {
     private BookRepository bookRepository;
 
     @Test
-    void export() {
+    void export() throws FileNotFoundException {
         List<Book> books = new ArrayList<>();
         Book book1 = Book.builder()
                 .author("Isaac Asimov")
@@ -76,7 +77,6 @@ class CsvBookReportServiceIntegrationTest {
 
         bookRepository.saveAll(books);
 
-        String result = reportService.export();
-        assertEquals(result, "CSV");
+        assertDoesNotThrow(reportService::export);
     }
 }

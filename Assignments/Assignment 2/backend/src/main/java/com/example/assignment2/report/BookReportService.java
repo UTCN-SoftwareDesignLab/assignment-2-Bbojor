@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 @RequiredArgsConstructor
@@ -16,7 +17,7 @@ public abstract class BookReportService {
 
     final BookRepository bookRepository;
 
-    public abstract String export();
+    public abstract String export() throws IOException;
 
     public abstract  BookReportType getType();
 

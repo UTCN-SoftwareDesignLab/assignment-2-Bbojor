@@ -29,7 +29,6 @@ public class Bootstrapper implements ApplicationListener<ApplicationReadyEvent> 
     @Value("${app.bootstrapUsers}")
     private Boolean bootstrapUsers;
 
-
     @Override
     public void onApplicationEvent(ApplicationReadyEvent event) {
         if(bootstrapRoles) {

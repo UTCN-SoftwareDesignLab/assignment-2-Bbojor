@@ -30,4 +30,8 @@ public class Book {
     @Column(nullable = false)
     private Integer quantity;
 
+    public String toCSV() {
+        return author + ", " + title;
+    }
+
 }

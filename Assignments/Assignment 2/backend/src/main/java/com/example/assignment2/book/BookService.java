@@ -7,6 +7,7 @@ import com.example.assignment2.search.PredicateBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
@@ -72,5 +73,17 @@ public class BookService {
     public BookDTO getBook(Long id) {
         return bookMapper.toDto(bookRepository.findById(id).
                 orElseThrow(() -> new EntityNotFoundException("Book not found: " + id)));
+    }
+
+    public BookDTO sell(Long id, Integer quantity) {
+        Book existingBook = findById(id);
+        int newStock  = existingBook.getQuantity() - quantity;
+        if(newStock < 0) {
+            return null;
+        }
+        else {
+            existingBook.setQuantity(newStock);
+            return bookMapper.toDto(bookRepository.save(existingBook));
+        }
     }
 }
