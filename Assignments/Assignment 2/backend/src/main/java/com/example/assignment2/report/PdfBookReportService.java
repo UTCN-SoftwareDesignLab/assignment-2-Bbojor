@@ -22,38 +22,35 @@ public class PdfBookReportService extends BookReportService {
     }
 
     @Override
-    public String export()  {
+    public String export() throws IOException {
 
-        try {
-            PDDocument document = new PDDocument();
-            PDPage page = new PDPage();
-            document.addPage(page);
-            PDPageContentStream contentStream = new PDPageContentStream(document, page);
+        String fileName = "report_" + new Date().toString().replace(' ', '-') + ".pdf";
 
-            contentStream.beginText();
+        PDDocument document = new PDDocument();
+        PDPage page = new PDPage();
+        document.addPage(page);
+        PDPageContentStream contentStream = new PDPageContentStream(document, page);
 
-            contentStream.setFont(PDType1Font.TIMES_ROMAN, 12);
+        contentStream.beginText();
 
-            contentStream.newLineAtOffset(25, 700);
+        contentStream.setFont(PDType1Font.TIMES_ROMAN, 12);
 
+        contentStream.newLineAtOffset(25, 700);
 
-            Iterable<Book> outOfStockBooks = getOutOfStockBooks();
+        Iterable<Book> outOfStockBooks = getOutOfStockBooks();
 
-            for (Book b: outOfStockBooks) {
-                contentStream.showText(b.getTitle() + " - " + b.getAuthor());
-                contentStream.newLineAtOffset(0, -15);
-            }
-
-            contentStream.endText();
-            contentStream.close();
-
-            document.save( "report_" + new Date().toString().replace(' ', '-') + ".pdf");
-            document.close();
-
-        } catch (IOException e) {
-            return "ERROR";
+        for (Book b: outOfStockBooks) {
+            contentStream.showText(b.getTitle() + " - " + b.getAuthor());
+            contentStream.newLineAtOffset(0, -15);
         }
-        return "PDF";
+
+        contentStream.endText();
+        contentStream.close();
+
+        document.save(fileName);
+        document.close();
+
+        return fileName;
     }
 
     @Override

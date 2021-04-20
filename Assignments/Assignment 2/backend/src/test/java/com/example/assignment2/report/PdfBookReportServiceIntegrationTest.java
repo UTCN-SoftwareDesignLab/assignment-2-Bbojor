@@ -76,8 +76,7 @@ class PdfBookReportServiceIntegrationTest {
 
         bookRepository.saveAll(books);
 
-        String result = reportService.export();
-        assertEquals(result, "PDF");
+        assertDoesNotThrow(reportService::export);
     }
 
 }
