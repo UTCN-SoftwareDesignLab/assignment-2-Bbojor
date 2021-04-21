@@ -22,7 +22,7 @@ public abstract class BookReportService {
     public abstract  BookReportType getType();
 
     Iterable<Book> getOutOfStockBooks() {
-        PredicateBuilder<Book> predicateBuilder = new PredicateBuilder<>(Book.class).with("quantity", "<", "0");
-        return bookRepository.findAll(predicateBuilder.build());
+        PredicateBuilder<Book> predicateBuilder = new PredicateBuilder<>(Book.class);
+        return bookRepository.findAll(predicateBuilder.build("quantity<0"));
     }
 }

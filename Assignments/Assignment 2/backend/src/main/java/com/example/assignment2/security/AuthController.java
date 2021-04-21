@@ -73,16 +73,4 @@ public class AuthController {
         return ResponseEntity.ok("User registered successfully!");
     }
 
-    //Catch exceptions thrown by validators in controller methods and put the errors in a list
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public List<String> handleValidationExceptions(MethodArgumentNotValidException ex) {
-        List<String> errors = new ArrayList<>();
-        ex.getBindingResult().getAllErrors().forEach((error) -> {
-            String errorMessage = error.getDefaultMessage();
-            errors.add(errorMessage);
-        });
-        return errors;
-    }
-
 }

@@ -9,12 +9,12 @@
       <v-card>
         <v-toolbar color="primary" dark> Sell book </v-toolbar>
         <p>Title: {{ book.title }}</p>
-        <p>Author : {{ book.author }}</p>
+        <p>Author: {{ book.author }}</p>
         <p>Genre: {{ book.genre }}</p>
         <p>Price: {{ book.price }}</p>
         <p>Stock: {{ book.quantity }}</p>
         <v-form>
-          <v-text-field v-model="quantity" label="Quantity" />
+          <v-text-field type="number" v-model="quantity" label="Quantity" />
         </v-form>
         <v-card-actions>
           <v-btn @click="persist">Sell</v-btn>

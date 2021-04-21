@@ -7,12 +7,9 @@ import com.example.assignment2.search.PredicateBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -30,14 +27,11 @@ public class BookService {
 
     public List<BookDTO> findAll(String search) {
 
-        if(search != null) { //parse search string and create appropriate query conditions
+        if(search != null) {
+
             PredicateBuilder<Book> predicateBuilder = new PredicateBuilder<Book>(Book.class);
-            Pattern pattern = Pattern.compile("(\\w+?)(:|<|>)(\\w+?),");
-            Matcher matcher = pattern.matcher(search + ",");
-            while(matcher.find()) {
-                predicateBuilder.with(matcher.group(1), matcher.group(2), matcher.group(3));
-            }
-            BooleanExpression booleanExpression = predicateBuilder.build();
+            BooleanExpression booleanExpression = predicateBuilder.build(search);
+
             return  StreamSupport.stream(
                     bookRepository.findAll(booleanExpression).spliterator(),false)
                     .map(bookMapper::toDto)
