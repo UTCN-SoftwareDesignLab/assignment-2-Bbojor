@@ -60,6 +60,7 @@ export default {
     },
     closeDialog() {
       this.dialogVisible = false;
+      this.refreshList();
     },
   },
   async created() {

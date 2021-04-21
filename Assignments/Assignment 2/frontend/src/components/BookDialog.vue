@@ -14,8 +14,8 @@
           <v-text-field v-model="book.title" label="Title" />
           <v-text-field v-model="book.author" label="Author" />
           <v-text-field v-model="book.genre" label="Genre" />
-          <v-text-field v-model="book.price" label="Price" />
-          <v-text-field v-model="book.quantity" label="Quantity" />
+          <v-text-field type="number" v-model="book.price" label="Price" />
+          <v-text-field type="number" v-model="book.quantity" label="Quantity" />
         </v-form>
         <v-card-actions>
           <v-btn @click="persist">
@@ -64,7 +64,7 @@ export default {
             price: this.book.price,
             quantity: this.book.quantity,
           })
-          .then(() => this.$emit("refresh"))
+          .then(() => this.$emit("close-dialog"))
           .catch((error) => {
             alert(error.response.data);
           });

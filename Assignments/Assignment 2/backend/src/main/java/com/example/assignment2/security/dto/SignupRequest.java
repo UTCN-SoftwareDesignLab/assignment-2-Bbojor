@@ -16,13 +16,14 @@ import java.util.Set;
 @Builder
 public class SignupRequest {
 
-    @NotBlank(message = "Username cannot be empty")
+    @NotBlank(message = "Username cannot be blank")
     private String username;
 
+    @NotBlank(message = "Email cannot be blank")
     @Email(message = "Not a valid email")
     private String email;
 
-    @NotBlank(message = "Password cannot be empty")
+    @NotBlank(message = "Password cannot be blank")
     @Length(min = 5, message = "Password must contain at least 5 characters")
     private String password;
 

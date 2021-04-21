@@ -100,7 +100,6 @@ export default {
       this.editDialogVisible = true;
     },
     async refreshList() {
-
       this.selectedBook = {};
       let searchString = "";
       if (this.searchParams.title)
